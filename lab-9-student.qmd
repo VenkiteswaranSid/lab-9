@@ -1,6 +1,6 @@
 ---
 title: "Lab 9: Data Simulation Exploration"
-author: "Your name here!"
+author: "Siddharth Venkiteswaran"
 format: html
 editor: source
 embed-resources: true
@@ -8,8 +8,8 @@ embed-resources: true
 
 ```{r}
 #| label: setup
-
-
+library(purrr)
+library(tidyverse)
 ```
 
 ## Random Babies Simulation
@@ -32,13 +32,16 @@ for it to be compatible with `map_int()`!
 
 ```{r}
 #| label: function-simulation-for-random-babies
-
+set.seed(5102005)
 randomBabies <- function(nBabies){
-  ...
+  original_babies <- 1:nBabies
+  new_babies <- sample(nBabies)
+  correct_babies <- sum(original_babies == new_babies)
+  return(correct_babies)
 }
 
 results <- map_int(.x = 1:10000,
-                   .f = ___
+                   .f = ~randomBabies(4)
                    )
 ```
 

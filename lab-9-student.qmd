@@ -65,8 +65,18 @@ enframe(results,
 
 ```{r}
 #| label: table-for-random-babies
-
-
+enframe(results, 
+        name = "simulation_number", 
+        value = "ncorrect") |>
+  count(ncorrect) |>
+  mutate(proportion = n/10000) |>
+  select(ncorrect, proportion) |>
+  pivot_wider(
+    names_from = ncorrect,
+    values_from = proportion,
+    names_prefix = "correct_",
+    values_fill = 0
+  )
 ```
 
 **3. Now create a barplot showing the proportion of simulations where 0, 1, 2, 3, and 4 babies were given to their correct parent(s).** 
@@ -85,7 +95,20 @@ geom_bar(mapping = aes(y = after_stat(count) / sum(after_stat(count))
 
 ```{r}
 #| label: visualization-for-random-babies
+results_df <- enframe(results, 
+        name = "simulation_number", 
+        value = "ncorrect")
 
+results_df |>
+  ggplot(aes(x = ncorrect)) +
+  geom_bar(mapping = aes(y = after_stat(count) / sum(after_stat(count))),
+           fill = "firebrick",
+           colour = "black") +
+  labs(title = "Proportion of Babies Correctly Returned",
+       x = "Number of Babies Returned Correctly",
+       y = NULL,
+       subtitle = "Proportion of Simulations") +
+  theme_bw()
 ```
 
 ## Central Limit Theorem -- Optional & Somewhat Spicy

@@ -1,15 +1,28 @@
 ---
 title: "Lab 9: Data Simulation Exploration"
 author: "Siddharth Venkiteswaran"
-format: html
+format: 
+  html:  
+    embed-resources: true
+    code-tools: true
+    toc: true
+    toc-depth: 2
 editor: source
-embed-resources: true
+message: false
+warning: false
+code-fold: true
+theme: cyborg
+execute: 
+  echo: true
+  output: true
+  error: false
 ---
 
 ```{r}
 #| label: setup
 library(purrr)
 library(tidyverse)
+library(gt)
 ```
 
 ## Random Babies Simulation
@@ -76,7 +89,14 @@ enframe(results,
     values_from = proportion,
     names_prefix = "correct_",
     values_fill = 0
-  )
+  ) |>
+  gt() |>
+   tab_options(
+    table.border.top.style = "solid",
+    table.border.bottom.style = "solid",
+    table.width = pct(80),
+    table.background.color = "gray",
+    table.font.color = "black")
 ```
 
 **3. Now create a barplot showing the proportion of simulations where 0, 1, 2, 3, and 4 babies were given to their correct parent(s).** 
@@ -140,6 +160,7 @@ This is not the case, so let's do some exploring!
 I've provided some skeleton code to get you started. :) 
 
 ```{r}
+#| eval: false
 simulate_means <- function(n, df){
   map_dbl(.x = ___, 
           .f = ~rchisq(n = 100, ___) %>% mean()
@@ -153,6 +174,7 @@ simulate_means <- function(n, df){
 -  **`df` = 10**
 
 ```{r}
+#| eval: false
 grid <- crossing(n = ___, 
                  df = 5)
 ```
@@ -165,6 +187,7 @@ You will want to use the `unnest()` function to extract the results of the
 :::
 
 ```{r}
+#| eval: false
 all_simulations <- grid |> 
   mutate(simulated_means = pmap(.l = list(___), 
                                 .f = simulate_means)
